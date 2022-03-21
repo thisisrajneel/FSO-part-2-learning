@@ -78,6 +78,17 @@ const App = () => {
             setNotes(notes.filter(n => n.id !== id))
           })
   }
+  const removeNote = (id) => {
+    noteService.remove(id)
+                .then(data => {
+                  const note = notes.find(n => n.id === id)
+                  setErrormessage(`${note.content} was removed`)
+                  setTimeout(() => {
+                    setErrormessage(null)
+                  }, 3000)
+                  setNotes(notes.filter(n => n.id !== id))
+                })
+  }
 
   return (
     <div>
@@ -90,7 +101,7 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map(note => 
-          <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />  
+          <Note key={note.id} note={note} toggleImportance={() => toggleImportanceOf(note.id)} removeNote={() => removeNote(note.id)} />  
         )}
       </ul>
       <form onSubmit={addNote}>
